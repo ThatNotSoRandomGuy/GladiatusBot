@@ -1,4 +1,6 @@
 ﻿using GladiatusBot.Core;
+using MetroFramework;
+using MetroFramework.Forms;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -11,21 +13,33 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GladiatusBot {
-    public partial class frmMainForm : Form {
-        private RestClient  _RestClient;
-        private SessionInfo _Session;
-        private Form        _Parent;
-        public frmMainForm( Form parent, RestClient client, SessionInfo session ) {
-            _RestClient = client;
-            _Session = session;
-            _Parent = parent;
+    public partial class frmMainForm : MetroForm {
 
+        private GladiatusClient _Gladiatus;
+
+        public frmMainForm( ) {
             InitializeComponent();
+
+            InitializeStyleManager();
+
+            Login();
         }
 
-        protected override void OnClosed( EventArgs e ) {
-            base.OnClosed( e );
-            _Parent.Close();
+        private void Login() {
+            frmLogin loginForm = new frmLogin(this.metroStyleManager);
+            if(loginForm.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                _Gladiatus = loginForm.GetClient();
+            } else {
+                //This will close the form
+                Shown += ( s, e ) => Close();
+            }
+        }
+
+        private void InitializeStyleManager() {
+            metroStyleManager.Owner = this;
+            metroStyleManager.Theme = MetroThemeStyle.Dark;
+            metroStyleManager.Style = MetroColorStyle.Blue;
+            this.StyleManager = metroStyleManager;
         }
     }
 }

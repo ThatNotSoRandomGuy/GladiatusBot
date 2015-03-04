@@ -28,122 +28,140 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.inputCountry = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.inputProvince = new System.Windows.Forms.TextBox();
-            this.inputUsername = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.inputPassword = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.buttonLogin = new System.Windows.Forms.Button();
-            this.inputRememberMe = new System.Windows.Forms.CheckBox();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
+            this.inputCountry = new MetroFramework.Controls.MetroComboBox();
+            this.inputProvince = new MetroFramework.Controls.MetroTextBox();
+            this.inputUsername = new MetroFramework.Controls.MetroTextBox();
+            this.inputPassword = new MetroFramework.Controls.MetroTextBox();
+            this.inputRememberMe = new MetroFramework.Controls.MetroCheckBox();
+            this.buttonLogin = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
+            // 
+            // metroLabel1
+            // 
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.Location = new System.Drawing.Point(23, 70);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(56, 19);
+            this.metroLabel1.TabIndex = 10;
+            this.metroLabel1.Text = "Country";
+            // 
+            // metroLabel2
+            // 
+            this.metroLabel2.AutoSize = true;
+            this.metroLabel2.Location = new System.Drawing.Point(23, 101);
+            this.metroLabel2.Name = "metroLabel2";
+            this.metroLabel2.Size = new System.Drawing.Size(59, 19);
+            this.metroLabel2.TabIndex = 11;
+            this.metroLabel2.Text = "Province";
+            // 
+            // metroLabel3
+            // 
+            this.metroLabel3.AutoSize = true;
+            this.metroLabel3.Location = new System.Drawing.Point(23, 130);
+            this.metroLabel3.Name = "metroLabel3";
+            this.metroLabel3.Size = new System.Drawing.Size(68, 19);
+            this.metroLabel3.TabIndex = 12;
+            this.metroLabel3.Text = "Username";
+            // 
+            // metroLabel4
+            // 
+            this.metroLabel4.AutoSize = true;
+            this.metroLabel4.Location = new System.Drawing.Point(23, 158);
+            this.metroLabel4.Name = "metroLabel4";
+            this.metroLabel4.Size = new System.Drawing.Size(63, 19);
+            this.metroLabel4.TabIndex = 13;
+            this.metroLabel4.Text = "Password";
             // 
             // inputCountry
             // 
             this.inputCountry.FormattingEnabled = true;
-            this.inputCountry.Location = new System.Drawing.Point(73, 12);
+            this.inputCountry.ItemHeight = 23;
+            this.inputCountry.Location = new System.Drawing.Point(97, 63);
             this.inputCountry.Name = "inputCountry";
-            this.inputCountry.Size = new System.Drawing.Size(150, 21);
-            this.inputCountry.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Country";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 42);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Province";
+            this.inputCountry.Size = new System.Drawing.Size(158, 29);
+            this.inputCountry.TabIndex = 14;
+            this.inputCountry.UseSelectable = true;
             // 
             // inputProvince
             // 
-            this.inputProvince.Location = new System.Drawing.Point(73, 39);
+            this.inputProvince.Lines = new string[0];
+            this.inputProvince.Location = new System.Drawing.Point(97, 99);
+            this.inputProvince.MaxLength = 32767;
             this.inputProvince.Name = "inputProvince";
-            this.inputProvince.Size = new System.Drawing.Size(150, 20);
-            this.inputProvince.TabIndex = 3;
+            this.inputProvince.PasswordChar = '\0';
+            this.inputProvince.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.inputProvince.SelectedText = "";
+            this.inputProvince.Size = new System.Drawing.Size(158, 23);
+            this.inputProvince.TabIndex = 15;
+            this.inputProvince.UseSelectable = true;
             // 
             // inputUsername
             // 
-            this.inputUsername.Location = new System.Drawing.Point(73, 65);
+            this.inputUsername.Lines = new string[0];
+            this.inputUsername.Location = new System.Drawing.Point(97, 128);
+            this.inputUsername.MaxLength = 32767;
             this.inputUsername.Name = "inputUsername";
-            this.inputUsername.Size = new System.Drawing.Size(150, 20);
-            this.inputUsername.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 68);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Username";
+            this.inputUsername.PasswordChar = '\0';
+            this.inputUsername.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.inputUsername.SelectedText = "";
+            this.inputUsername.Size = new System.Drawing.Size(158, 23);
+            this.inputUsername.TabIndex = 16;
+            this.inputUsername.UseSelectable = true;
             // 
             // inputPassword
             // 
-            this.inputPassword.Location = new System.Drawing.Point(73, 91);
+            this.inputPassword.Lines = new string[0];
+            this.inputPassword.Location = new System.Drawing.Point(97, 157);
+            this.inputPassword.MaxLength = 32767;
             this.inputPassword.Name = "inputPassword";
-            this.inputPassword.PasswordChar = '*';
-            this.inputPassword.Size = new System.Drawing.Size(150, 20);
-            this.inputPassword.TabIndex = 7;
-            this.inputPassword.UseSystemPasswordChar = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 94);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Password";
-            // 
-            // buttonLogin
-            // 
-            this.buttonLogin.Location = new System.Drawing.Point(115, 117);
-            this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(108, 23);
-            this.buttonLogin.TabIndex = 8;
-            this.buttonLogin.Text = "Login";
-            this.buttonLogin.UseVisualStyleBackColor = true;
-            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
+            this.inputPassword.PasswordChar = '\0';
+            this.inputPassword.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.inputPassword.SelectedText = "";
+            this.inputPassword.Size = new System.Drawing.Size(158, 23);
+            this.inputPassword.TabIndex = 17;
+            this.inputPassword.UseSelectable = true;
             // 
             // inputRememberMe
             // 
             this.inputRememberMe.AutoSize = true;
-            this.inputRememberMe.Location = new System.Drawing.Point(15, 121);
+            this.inputRememberMe.Location = new System.Drawing.Point(23, 194);
             this.inputRememberMe.Name = "inputRememberMe";
-            this.inputRememberMe.Size = new System.Drawing.Size(94, 17);
-            this.inputRememberMe.TabIndex = 9;
-            this.inputRememberMe.Text = "Remember me";
-            this.inputRememberMe.UseVisualStyleBackColor = true;
+            this.inputRememberMe.Size = new System.Drawing.Size(101, 15);
+            this.inputRememberMe.TabIndex = 18;
+            this.inputRememberMe.Text = "Remember Me";
+            this.inputRememberMe.UseSelectable = true;
+            // 
+            // buttonLogin
+            // 
+            this.buttonLogin.Location = new System.Drawing.Point(137, 189);
+            this.buttonLogin.Name = "buttonLogin";
+            this.buttonLogin.Size = new System.Drawing.Size(118, 23);
+            this.buttonLogin.TabIndex = 19;
+            this.buttonLogin.Text = "Login";
+            this.buttonLogin.UseSelectable = true;
+            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
             // frmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(240, 153);
-            this.Controls.Add(this.inputRememberMe);
+            this.ClientSize = new System.Drawing.Size(271, 237);
             this.Controls.Add(this.buttonLogin);
+            this.Controls.Add(this.inputRememberMe);
             this.Controls.Add(this.inputPassword);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.inputUsername);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.inputProvince);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.inputCountry);
+            this.Controls.Add(this.metroLabel4);
+            this.Controls.Add(this.metroLabel3);
+            this.Controls.Add(this.metroLabel2);
+            this.Controls.Add(this.metroLabel1);
             this.Name = "frmLogin";
-            this.Text = "Form1";
+            this.Text = "Login";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,16 +169,17 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox inputCountry;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox inputProvince;
-        private System.Windows.Forms.TextBox inputUsername;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox inputPassword;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button buttonLogin;
-        private System.Windows.Forms.CheckBox inputRememberMe;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private MetroFramework.Controls.MetroLabel metroLabel2;
+        private MetroFramework.Controls.MetroLabel metroLabel3;
+        private MetroFramework.Controls.MetroLabel metroLabel4;
+        private MetroFramework.Controls.MetroComboBox inputCountry;
+        private MetroFramework.Controls.MetroTextBox inputProvince;
+        private MetroFramework.Controls.MetroTextBox inputUsername;
+        private MetroFramework.Controls.MetroTextBox inputPassword;
+        private MetroFramework.Controls.MetroCheckBox inputRememberMe;
+        private MetroFramework.Controls.MetroButton buttonLogin;
+
 
     }
 }

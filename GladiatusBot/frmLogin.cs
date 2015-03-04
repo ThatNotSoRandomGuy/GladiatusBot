@@ -1,4 +1,7 @@
-﻿using RestSharp;
+﻿using GladiatusBot.Core;
+using MetroFramework.Components;
+using MetroFramework.Forms;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +16,7 @@ using System.Windows.Forms;
 
 namespace GladiatusBot
 {
-    public partial class frmLogin : Form
+    public partial class frmLogin : MetroForm
     {
         private Dictionary<string,string> _Countries = 
             new Dictionary<string,string>() { 
@@ -21,22 +24,38 @@ namespace GladiatusBot
                 {"USA","us"}
             };
 
-        string filePath = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData ), "GladiatusBot\\userinfo.dat" );
-        RestClient _RestClient;
-        public frmLogin() {
+        private string SaveFile = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData ), "GladiatusBot\\userinfo.dat" );
+        private GladiatusClient _Client;
+
+        public frmLogin(MetroStyleManager style) {
             InitializeComponent();
+            InitializeStyleManager( style );
+
+            InitializeCountriesComboBox();
+
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        }
+
+        private void InitializeCountriesComboBox() {
+            inputCountry.Items.Clear();
+            foreach(KeyValuePair<string, string> kv in _Countries) {
+                inputCountry.Items.Add( kv.Key );
+            }
+            inputCountry.SelectedIndex = 0;
+        }
+
+        private void InitializeStyleManager( MetroStyleManager style ) {
+            this.StyleManager = new MetroFramework.Components.MetroStyleManager( this.components );
+            this.StyleManager.Theme = style.Theme;
+            this.StyleManager.Style = style.Style;
+            this.StyleManager.Owner = this;
         }
 
         protected override void OnLoad( EventArgs e ) {
             base.OnLoad( e );
 
-            foreach(var kv in _Countries) {
-                inputCountry.Items.Add( kv.Key );
-            }
-            inputCountry.SelectedIndex = 0;
-
-            if(File.Exists( filePath )) {
-                string[] content = File.ReadAllLines( filePath );
+            if(File.Exists( SaveFile )) {
+                string[] content = File.ReadAllLines( SaveFile );
                 try {
                     inputUsername.Text = ( from cont in content
                                            where cont.StartsWith( "username" )
@@ -69,29 +88,24 @@ namespace GladiatusBot
         }
 
         private void buttonLogin_Click( object sender, EventArgs e ) {
+
+            if(!CanLogin()) { 
+                MessageBox.Show( "Make sure all fields are filled." ); 
+                return; 
+            }
+
+            _Client = new GladiatusClient(
+                new LoginInfo(
+                    inputUsername.Text,
+                    inputPassword.Text,
+                    "s" + inputProvince.Text,
+                    _Countries[(string)inputCountry.SelectedItem] ) );
+
+            if(!_Client.Login()) {
+                MessageBox.Show( "Login failed. Make sure your information is correct." );
+                return;
+            }
             
-            int server = 0;
-            if(!int.TryParse( inputProvince.Text, out server )) {
-                MessageBox.Show( "Please type a province number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-                return;
-            }
-
-            if(inputUsername.Text.Length == 0 || inputPassword.Text.Length == 0) {
-                MessageBox.Show( "Please type a username and password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
-                return;
-            }
-
-
-            var url = String.Format( "http://s{0}.{1}.gladiatus.gameforge.com", server, _Countries[(string)inputCountry.SelectedItem] );
-            _RestClient = new RestClient(url);
-
-            Core.Login login = new Core.Login( _RestClient, inputUsername.Text, inputPassword.Text );
-            var session = login.DoLogin();
-            if(!session.IsLogged) {
-                MessageBox.Show( "Failed to login. Make sure the country and province are correct." );
-                return;
-            }
-
             if(inputRememberMe.Checked) {
                 string[] lines = {
                     "username=" + inputUsername.Text,
@@ -100,19 +114,25 @@ namespace GladiatusBot
                     "country=" + (string)inputCountry.SelectedItem,
                     "remember=" + inputRememberMe.Checked.ToString()
                 };
-                if(!Directory.Exists( Directory.GetParent( filePath ).FullName)) {
-                    Directory.CreateDirectory( filePath );
+                if(!Directory.Exists( Directory.GetParent( SaveFile ).FullName)) {
+                    Directory.CreateDirectory( SaveFile );
                 }
-                File.WriteAllLines( filePath, lines );
+                File.WriteAllLines( SaveFile, lines );
             } else {
-                if(File.Exists( filePath )) {
-                    File.Delete( filePath );
+                if(File.Exists( SaveFile )) {
+                    File.Delete( SaveFile );
                 }
             }
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+        }
 
-            frmMainForm mainForm = new frmMainForm( this, _RestClient, session );
-            this.Hide();
-            mainForm.Show();
+        private bool CanLogin() {
+            int server;
+            return int.TryParse( inputProvince.Text, out server ) && inputUsername.Text.Length != 0 && inputPassword.Text.Length != 0;
+        }
+
+        public GladiatusClient GetClient() {
+            return _Client;
         }
     }
 }
