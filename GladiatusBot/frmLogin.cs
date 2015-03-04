@@ -1,10 +1,12 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +21,8 @@ namespace GladiatusBot
                 {"USA","us"}
             };
 
+        string filePath = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.CommonApplicationData ), "GladiatusBot\\userinfo.dat" );
+        RestClient _RestClient;
         public frmLogin() {
             InitializeComponent();
         }
@@ -31,25 +35,35 @@ namespace GladiatusBot
             }
             inputCountry.SelectedIndex = 0;
 
-            if(File.Exists( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ), "GladiatusBot\\userinfo.dat" ) )) {
-                string[] content = File.ReadAllLines( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ), "GladiatusBot\\userinfo.dat" ) );
+            if(File.Exists( filePath )) {
+                string[] content = File.ReadAllLines( filePath );
+                try {
+                    inputUsername.Text = ( from cont in content
+                                           where cont.StartsWith( "username" )
+                                           select cont.Split( '=' ).Last() ).First();
 
-                inputUsername.Text = ( from cont in content
-                                       where cont.StartsWith( "username" )
-                                       select cont.Split( '=' ).Last() ).First();
+                    inputPassword.Text = ( from cont in content
+                                           where cont.StartsWith( "password" )
+                                           select cont.Split( '=' ).Last() ).First();
 
-                inputPassword.Text = ( from cont in content
-                                       where cont.StartsWith( "password" )
-                                       select cont.Split( '=' ).Last() ).First();
+                    inputProvince.Text = ( from cont in content
+                                           where cont.StartsWith( "province" )
+                                           select cont.Split( '=' ).Last() ).First();
 
-                inputProvince.Text = ( from cont in content
-                                       where cont.StartsWith( "province" )
-                                       select cont.Split( '=' ).Last() ).First();
+                    inputCountry.SelectedItem = ( from cont in content
+                                                  where cont.StartsWith( "country" )
+                                                  select cont.Split( '=' ).Last() ).First();
 
-                inputCountry.SelectedText = ( from cont in content
-                                              where cont.StartsWith( "country" )
-                                              select cont.Split( '=' ).Last() ).First();
+                    inputRememberMe.Checked = ( from cont in content
+                                                  where cont.StartsWith( "remember" )
+                                                  select cont.Split( '=' ).Last() ).First().Equals("True");
 
+                } catch(InvalidOperationException ex) {
+
+                    MessageBox.Show( ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                } catch(Exception ex) {
+                    MessageBox.Show( ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
             }
 
         }
@@ -67,18 +81,38 @@ namespace GladiatusBot
                 return;
             }
 
-            var url = String.Format( "http://s{0}.{1}.gladiatus.gameforge.com", server, _Countries[(string)inputCountry.SelectedText] );
-            RestSharp.RestClient client = new RestSharp.RestClient( url );
 
-            Core.Login login = new Core.Login( client, inputUsername.Text, inputPassword.Text );
-            if(!login.DoLogin()) MessageBox.Show( "Failed to login. Make sure the country and province are correct." );
-            var sh = login.SecureHash;
+            var url = String.Format( "http://s{0}.{1}.gladiatus.gameforge.com", server, _Countries[(string)inputCountry.SelectedItem] );
+            _RestClient = new RestClient(url);
+
+            Core.Login login = new Core.Login( _RestClient, inputUsername.Text, inputPassword.Text );
+            var session = login.DoLogin();
+            if(!session.IsLogged) {
+                MessageBox.Show( "Failed to login. Make sure the country and province are correct." );
+                return;
+            }
 
             if(inputRememberMe.Checked) {
-                //save info
+                string[] lines = {
+                    "username=" + inputUsername.Text,
+                    "password=" + inputPassword.Text,
+                    "province=" + inputProvince.Text,
+                    "country=" + (string)inputCountry.SelectedItem,
+                    "remember=" + inputRememberMe.Checked.ToString()
+                };
+                if(!Directory.Exists( Directory.GetParent( filePath ).FullName)) {
+                    Directory.CreateDirectory( filePath );
+                }
+                File.WriteAllLines( filePath, lines );
             } else {
-                //delete save
+                if(File.Exists( filePath )) {
+                    File.Delete( filePath );
+                }
             }
+
+            frmMainForm mainForm = new frmMainForm( this, _RestClient, session );
+            this.Hide();
+            mainForm.Show();
         }
     }
 }
