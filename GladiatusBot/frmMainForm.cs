@@ -21,8 +21,13 @@ namespace GladiatusBot {
             InitializeComponent();
 
             InitializeStyleManager();
+        }
 
-            Login();
+        protected override void OnLoad( EventArgs e ) {
+            base.OnLoad( e );
+
+            //Login();
+            //FillUI();
         }
 
         private void Login() {
@@ -33,6 +38,25 @@ namespace GladiatusBot {
                 //This will close the form
                 Shown += ( s, e ) => Close();
             }
+        }
+
+        private void FillUI() {
+            var overview = _Gladiatus.GetOverview();
+            if(overview == null){
+                throw new Exception( "Error trying to parse player overview." );
+            }
+            outputExperience.Text = overview.CurrentXP + "/" + overview.RequiredXP;
+            outputExperienceBar.Value = (overview.CurrentXP * 100) / overview.RequiredXP;
+
+            outputHP.Text = overview.CurrentHP + "/" + overview.MaxHP;
+            outputHPBar.Value = (overview.CurrentHP * 100) / overview.MaxHP;
+
+            outputGold.Text = overview.Gold.ToString();
+            outputRubies.Text = overview.Rubies.ToString();
+            outputRank.Text = overview.Ranking.ToString();
+            outputLevel.Text = overview.Level.ToString();
+
+
         }
 
         private void InitializeStyleManager() {

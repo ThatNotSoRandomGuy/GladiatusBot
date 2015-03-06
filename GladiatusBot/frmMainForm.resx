@@ -120,4 +120,14 @@
   <metadata name="metroStyleManager.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="metroLabel24.Text" xml:space="preserve">
+    <value>0 means the stat won't be trained. 
+Any other positive value is used 
+as a proportion. I.E: If Agility is set 
+to 1, Strength to 2 and Dexterity on
+3, it means that after trainning 1 
+Agility we will train 2 str and 3 
+dex before trainning agility again.
+</value>
+  </data>
 </root>
